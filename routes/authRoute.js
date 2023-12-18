@@ -9,6 +9,7 @@ import {
   forgotPasswordToken,
   getAllOrders,
   getAllUser,
+  getOrderByUserId,
   getOrders,
   getUser,
   getUserCart,
@@ -41,7 +42,8 @@ router.post('/cart/applycoupon', authMiddleware, applyCoupon);
 router.post('/cart/cash-order', authMiddleware, createOrder);
 router.get('/all-users', getAllUser);
 router.get('/get-orders', authMiddleware, getOrders);
-router.get('/get-allorders', authMiddleware,isAdmin, getAllOrders);
+router.get('/get-allorders', authMiddleware, isAdmin, getAllOrders);
+router.post('/getorderbyuser/:id', authMiddleware, isAdmin, getOrderByUserId);
 router.get('/refresh', handleRefreshToken); // why is refreshtoke here?
 router.get('/wishlist', authMiddleware, getWishList);
 router.get('/cart', authMiddleware, getUserCart);

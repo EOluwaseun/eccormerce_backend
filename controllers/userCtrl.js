@@ -486,21 +486,37 @@ export const getOrders = expressAsyncHandler(async (req, res) => {
   validateMongodbId(_id);
   try {
     const userOrders = await Order.findOne({ orderby: _id })
-    .populate('products.product').populate('orderby')
-    .exec();
+      .populate('products.product')
+      .populate('orderby')
+      .exec();
     res.json(userOrders);
   } catch (error) {
     throw new Error(error);
-  }  
+  }
 });
 
 // get all orders
 export const getAllOrders = expressAsyncHandler(async (req, res) => {
   try {
     const allUserOrders = await Order.find()
-    .populate('products.product').populate('orderby')
-    .exec();
+      .populate('products.product')
+      .populate('orderby')
+      .exec();
     res.json(allUserOrders);
+  } catch (error) { 
+    throw new Error(error);
+  }
+});
+
+export const getOrderByUserId = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongodbId(id);
+  try {
+    const userOrders = await Order.findOne({ orderby: id })
+      .populate('products.product')
+      .populate('orderby')
+      .exec();
+    res.json(userOrders);
   } catch (error) {
     throw new Error(error);
   }
