@@ -14,7 +14,6 @@ import colorRoute from './routes/colorRoute.js';
 import enquiryRoute from './routes/enqRoutes.js';
 import couponRoute from './routes/couponRoute.js';
 import uploadRoute from './routes/uploadRoute.js';
-
 import { errorHandler, notFound } from './middlewares/errorHandler.js';
 
 dotenv.config();

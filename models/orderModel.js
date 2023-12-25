@@ -13,6 +13,22 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     paymentIntent: {},
+    paidAt:{
+      type:Date,
+      default:Date.now()
+    },
+    month:{
+      type:String,
+      default:new Date().getMonth()
+    },
+    totalPrice:{
+      type:Number,
+      required:true,
+    },
+    totalPriceAfterDiscount:{
+      type:Number,
+      required:true,
+    },
     orderStatus: {
       type: String,
       default: 'Not Processed',
