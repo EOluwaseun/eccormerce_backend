@@ -503,7 +503,7 @@ export const getAllOrders = expressAsyncHandler(async (req, res) => {
       .populate('orderby')
       .exec();
     res.json(allUserOrders);
-  } catch (error) { 
+  } catch (error) {
     throw new Error(error);
   }
 });
@@ -546,103 +546,136 @@ export const updateOrderStatus = expressAsyncHandler(async (req, res) => {
   }
 });
 
-export const getMonthOrderIncome = expressAsyncHandler(async (req, res)=>{
-  let monthName =['January', 'February', 'March', 'April','May', 'June', 'July','August', 'September', 'October', 'November','December']
-  let d = new Date()
-  let endDate =""
-  d.setDate(1)
-  for(let index = 0; index < 11; index++){
-    d.setMonth(d.getMonth() - 1)
-    endDate = monthName[d.getMonth()] + " " + d.getFullYear()
-  // console.log(endDate)
-
+export const getMonthOrderIncome = expressAsyncHandler(async (req, res) => {
+  let monthName = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let d = new Date();
+  let endDate = '';
+  d.setDate(1);
+  for (let index = 0; index < 11; index++) {
+    d.setMonth(d.getMonth() - 1);
+    endDate = monthName[d.getMonth()] + ' ' + d.getFullYear();
+    // console.log(endDate)
   }
 
   const data = await Order.aggregate([
     {
-      $match:{
-        createdAt:{
-          $lte:new Date(),
-          $gte:new Date(endDate)
-        }
-      }
-    },
-    {
-      $group:{
-        _id:{
-          month:"$month"
+      $match: {
+        createdAt: {
+          $lte: new Date(),
+          $gte: new Date(endDate),
         },
-        amount:{$sum: "$totalPriceAfterDiscount"}
-      }
-    }
-  ])
-  res.json(data)
-
-})
-
-export const getMonthOrderCount = expressAsyncHandler(async (req, res)=>{
-  let monthName =['January', 'February', 'March', 'April','May', 'June', 'July','August', 'September', 'October', 'November','December']
-  let d = new Date()
-  let endDate =""
-  d.setDate(1)
-  for(let index = 0; index < 11; index++){
-    d.setMonth(d.getMonth() - 1)
-    endDate = monthName[d.getMonth()] + " " + d.getFullYear()
-  // console.log(endDate)
-
-  }
-
-  const data = await Order.aggregate([
-    {
-      $match:{
-        createdAt:{
-          $lte:new Date(),
-          $gte:new Date(endDate)
-        }
-      }
+      },
     },
     {
-      $group:{
-        _id:{
-          month:"$month"
+      $group: {
+        _id: {
+          month: '$month',
         },
-        count:{$sum: 1}
-      }
-    }
-  ])
-  res.json(data)
+        amount: { $sum: '$totalPriceAfterDiscount' },
+      },
+    },
+  ]);
+  res.json(data);
+});
 
-})
-
-export const getYearlyTotalOrder = expressAsyncHandler(async (req, res)=>{
-  let monthName =['January', 'February', 'March', 'April','May', 'June', 'July','August', 'September', 'October', 'November','December']
-  let d = new Date()
-  let endDate =""
-  d.setDate(1)
-  for(let index = 0; index < 11; index++){
-    d.setMonth(d.getMonth() - 1)
-    endDate = monthName[d.getMonth()] + " " + d.getFullYear()
-  // console.log(endDate)
-
+export const getMonthOrderCount = expressAsyncHandler(async (req, res) => {
+  let monthName = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let d = new Date();
+  let endDate = '';
+  d.setDate(1);
+  for (let index = 0; index < 11; index++) {
+    d.setMonth(d.getMonth() - 1);
+    endDate = monthName[d.getMonth()] + ' ' + d.getFullYear();
+    // console.log(endDate)
   }
 
   const data = await Order.aggregate([
     {
-      $match:{
-        createdAt:{
-          $lte:new Date(),
-          $gte:new Date(endDate)
-        }
-      }
+      $match: {
+        createdAt: {
+          $lte: new Date(),
+          $gte: new Date(endDate),
+        },
+      },
     },
     {
-      $group:{
-        _id:null,
-        count:{$sum: 1},
-        amount:{$sum: "$totalPriceAfterDiscount"}
-      }
-    }
-  ])
-  res.json(data)
+      $group: {
+        _id: {
+          month: '$month',
+        },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  res.json(data);
+});
 
-})
+export const getYearlyTotalOrder = expressAsyncHandler(async (req, res) => {
+  let monthName = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let d = new Date();
+  let endDate = '';
+  d.setDate(1);
+  for (let index = 0; index < 11; index++) {
+    d.setMonth(d.getMonth() - 1);
+    endDate = monthName[d.getMonth()] + ' ' + d.getFullYear();
+    // console.log(endDate)
+  }
+
+  const data = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $lte: new Date(),
+          $gte: new Date(endDate),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+        amount: { $sum: '$totalPriceAfterDiscount' },
+      },
+    },
+  ]);
+  res.json(data);
+});
