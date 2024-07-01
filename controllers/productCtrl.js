@@ -18,6 +18,7 @@ export const createProduct = expressAsyncHandler(async (req, res) => {
 // product update
 export const updateProduct = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
+  validateMongoDbId(id);
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
@@ -47,8 +48,10 @@ export const deleteProduct = expressAsyncHandler(async (req, res) => {
 // get single product
 export const getaProduct = expressAsyncHandler(async (req, res) => {
   const { id } = req.params; //getting id from the url
+  // validateMongoDbId(id);
+
   try {
-    const findProduct = await Product.findById(id);
+    const findProduct = await Product.findById(id).populate('color'); //to show color details
     res.json(findProduct);
   } catch (error) {
     throw new Error(error);
@@ -64,7 +67,7 @@ export const getAllProduct = expressAsyncHandler(async (req, res) => {
     const excludeFields = ['page', 'sort', 'limit', 'fields']; // fields we need to exclude
     //deleting d query object
     excludeFields.forEach((el) => delete queryObject[el]); //we delete all d fields if its available in query
-    console.log(queryObject, req.query); //original query and modified query
+    // console.log(queryObject, req.query); //original query and modified query
 
     let queryString = JSON.stringify(queryObject); //stringify d modified string
     queryString = queryString.replace(
@@ -94,6 +97,7 @@ export const getAllProduct = expressAsyncHandler(async (req, res) => {
     }
 
     //FIELDS
+
     if (req.query.fields) {
       // category,brand this is spliited with comma then join it
       const fields = req.query.fields.split(',').join(' ');
@@ -111,7 +115,6 @@ export const getAllProduct = expressAsyncHandler(async (req, res) => {
       const productCount = await Product.countDocuments();
       if (skip >= productCount) throw new Error('This page does not exist');
     }
-    // console.log(page, limit, skip);
 
     const product = await query;
     res.json(product);
@@ -156,7 +159,7 @@ export const addToWishList = expressAsyncHandler(async (req, res) => {
 });
 
 //rating
-export const rating = expressAsyncHandler(async (req, res) => {
+export const addRating = expressAsyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { star, prodId, comment } = req.body;
   try {

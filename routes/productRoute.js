@@ -5,7 +5,7 @@ import {
   deleteProduct,
   getAllProduct,
   getaProduct,
-  rating,
+  addRating,
   updateProduct,
 } from '../controllers/productCtrl.js';
 import { authMiddleware, isAdmin } from '../middlewares/authMiddleware.js';
@@ -16,8 +16,7 @@ router.post('/', authMiddleware, isAdmin, createProduct);
 
 router.get('/:id', getaProduct);
 router.put('/wishlist', authMiddleware, addToWishList);
-router.put('/rating', authMiddleware, rating);
-
+router.put('/rating', authMiddleware, addRating);
 router.put('/:id', authMiddleware, isAdmin, updateProduct);
 router.delete('/:id', authMiddleware, isAdmin, deleteProduct); //check is admin, then check if it is authenticated user
 

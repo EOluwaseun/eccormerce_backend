@@ -10,17 +10,16 @@ const productSchema = new mongoose.Schema(
     brand: {
       type: String,
       required: true,
-      // enum: ['Apple', 'Samsung', 'Lenovo'],
     },
     quantity: { type: Number, required: true },
-    sold: { type: Number, default: 0 }, //to hide from user select:false
+    sold: { type: Number, default: 0 },
     images: [
       {
         public_id: String,
         url: String,
       },
     ],
-    color: [],
+    color: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Color' }], // populating this will show it's details
     tags: String,
     ratings: [
       {
@@ -30,7 +29,7 @@ const productSchema = new mongoose.Schema(
       },
     ],
     totalsrating: {
-      type: String,
+      type: Number,
       default: 0,
     },
   },
